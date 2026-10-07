@@ -9,3 +9,5 @@ data/
 *.db
 work/
 node_modules/
+
+site/vendor/

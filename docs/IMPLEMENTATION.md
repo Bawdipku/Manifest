@@ -31,7 +31,7 @@ A local Chromium check also exercised login, shipment registration, customer aut
 ## Operational assumptions and limits
 
 - Sales revenue currently equals cash + credit + destination collection. Forwarding fees are tracked separately as an expense, as confirmed by the user.
-- The full app has not yet been deployed: the user will provide server hosting access. GitHub Pages still serves the earlier prototype and does not share records with this backend.
+- The full app has not yet been deployed: the user will provide server hosting access. GitHub Pages serves a clearly labeled browser demo of the full interface and shared Python business rules. It has no real server authentication, stores fictional records only in the local browser, and does not share records with this backend.
 - No production data is seeded. Automated tests use clearly fictional data in temporary databases.
 - Event times are captured as timezone-aware timestamps; the UI labels entry as WIB. Reports use Asia/Jakarta boundaries. The server clock must be synchronized.
 - Large-scale load, real mobile/scanner/print testing, and a full recovery drill remain operational rollout gates. SQLite stores the entire current business state in one transactional document plus separate users, sessions, evidence, audit, and idempotency tables. Large deployments should move to a normalized database before scaling horizontally.

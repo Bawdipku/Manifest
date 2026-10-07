@@ -1,0 +1,105 @@
+.demo-bar {
+  background: #fff2cc;
+  border-bottom: 1px solid #e5ce83;
+  padding: 12px 22px;
+  color: #644b0b;
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  justify-content: space-between;
+  align-items: center;
+}
+.demo-bar strong {
+  display: block;
+}
+.demo-bar small {
+  color: #765f25;
+  font-size: 12px;
+}
+.demo-tools {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.demo-tools label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #644b0b;
+}
+.demo-tools select {
+  width: auto;
+  padding: 7px 9px;
+  font-size: 14px;
+  max-width: 230px;
+}
+.demo-tools button {
+  font-size: 13px;
+  padding: 8px 10px;
+}
+.demo-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #102a43;
+  display: grid;
+  place-items: center;
+  padding: 25px;
+}
+.demo-loading > div {
+  max-width: 510px;
+  color: white;
+}
+.demo-loading h1 {
+  margin: 22px 0 12px;
+}
+.demo-loading p {
+  color: #c5d8e4;
+}
+.demo-loading small {
+  color: #9dbbcd;
+}
+#login {
+  display: none !important;
+}
+#logout {
+  font-size: 0;
+}
+#logout::after {
+  content: "Kembali ke admin demo";
+  font-size: 13px;
+}
+@media (max-width: 700px) {
+  .demo-bar {
+    padding: 12px 15px;
+  }
+  .demo-tools {
+    width: 100%;
+  }
+  .demo-tools label {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .demo-tools select {
+    max-width: 240px;
+  }
+  .account {
+    max-width: 155px;
+  }
+  .account strong {
+    display: none;
+  }
+  #logout {
+    max-width: 150px;
+  }
+  .brand {
+    max-width: 220px;
+  }
+}
+@media print {
+  .demo-bar {
+    display: none;
+  }
+}

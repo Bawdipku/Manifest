@@ -1,6 +1,6 @@
 # Deploy the full PRD application
 
-The full app runs from `backend/` and `web/`. `site/` is the original browser-only GitHub Pages prototype; it does not run the PRD backend. The full app uses one same-origin HTTPS server with SQLite storage for records, audit history, accounts, sessions, and protected evidence. No customer data or passwords are included in this repository.
+The full app runs from `backend/` and `web/`. `site/` is the generated GitHub Pages demo; it runs business rules locally in the browser with fictional records and simulated accounts. It does not run the authenticated PRD backend. The full app uses one same-origin HTTPS server with SQLite storage for records, audit history, accounts, sessions, and protected evidence. No customer data or passwords are included in this repository.
 
 ## Server deployment with Docker Compose
 
