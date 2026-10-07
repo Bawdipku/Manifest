@@ -1,0 +1,32 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      DATABASE_PATH: /data/manifest.sqlite3
+      COOKIE_SECURE: "true"
+      TRUST_PROXY: "1"
+      APP_ORIGIN: https://${APP_DOMAIN:?Set APP_DOMAIN in .env}
+    volumes:
+      - manifest-data:/data
+    expose:
+      - "8000"
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:?Set APP_DOMAIN in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+volumes:
+  manifest-data:
+  caddy-data:
+  caddy-config:

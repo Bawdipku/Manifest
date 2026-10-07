@@ -1,0 +1,87 @@
+body {
+  font:
+    14px Arial,
+    sans-serif;
+  margin: 24px;
+  color: #111;
+}
+header,
+.grid,
+.sign {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+.grid > div {
+  width: 50%;
+}
+p {
+  overflow-wrap: anywhere;
+}
+h1 {
+  font-size: 24px;
+}
+.barcode {
+  max-width: 100%;
+  height: 90px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+td,
+th {
+  border: 1px solid #888;
+  padding: 8px;
+  text-align: left;
+}
+.copy {
+  break-after: page;
+}
+.copy:last-child {
+  break-after: auto;
+}
+.terms {
+  columns: 2;
+  font-size: 10px;
+  line-height: 1.35;
+}
+.terms p {
+  margin: 0 0 5px;
+}
+.terms h4 {
+  margin: 7px 0 4px;
+  break-after: avoid;
+}
+.statement {
+  font-size: 11px;
+}
+.sign {
+  margin-top: 22px;
+  break-inside: avoid;
+}
+.help {
+  background: #eee;
+  padding: 12px;
+}
+@page {
+  size: A4;
+  margin: 14mm;
+}
+@media print {
+  body {
+    margin: 0;
+  }
+  .help {
+    display: none;
+  }
+  thead {
+    display: table-header-group;
+  }
+  tr {
+    break-inside: avoid;
+  }
+  header {
+    break-inside: avoid;
+  }
+}

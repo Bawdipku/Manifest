@@ -1,0 +1,24 @@
+name: Full app acceptance checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt pytest==8.4.2
+      - run: python -m pytest -q
+      - run: node --check web/app.js && node --check web/sw.js
+      - name: Build deployment image
+        run: docker build -t manifest-prd-check .
+      - name: Verify non-root application and database initialization
+        run: >-
+          docker run --rm manifest-prd-check python -c
+          "import os; from backend.app import create_app; app=create_app(); assert os.getuid()!=0; assert app.test_client().get('/health').status_code==200"

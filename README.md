@@ -1,13 +1,27 @@
-# Manifest & SOA PWA
+# Manifest & SOA
 
-An Indonesian dispatch prototype for creating shipment receipts, assembling trip manifests, and recording departures. The app is in `site/` and deploys to GitHub Pages through `.github/workflows/pages.yml`.
+Indonesian cargo operations application based on [PRD 1.6](docs/PRD-1.6.md): sales and barcode BKC, multi-stage manifests, branch receipt, POD, SOA reconciliation, physical document returns, credit invoicing, and reports.
+
+The complete application code is in **`backend/` + `web/`**. It includes authenticated server permissions, persistent SQLite storage, private evidence, audit history, revision checks, and idempotent mutations. A real server is required; GitHub Pages cannot run the backend.
+
+- [Deployment and backup instructions](docs/DEPLOYMENT.md)
+- [Implemented scope, tests, and remaining rollout checks](docs/IMPLEMENTATION.md)
+- [Acceptance scenarios](tests/test_acceptance.py)
 
 ## Run locally
 
 ```sh
-python -m http.server 8000 --directory site
+python -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
+python -m backend.admin init-admin --username admin
+COOKIE_SECURE=false gunicorn --bind 127.0.0.1:8000 'backend.app:create_app()'
 ```
 
-Open `http://localhost:8000`. The app uses fictional demo records. Records added in the app are saved only in that browser's local storage. There are no user accounts, shared server records, branch permissions, POD, SOA reconciliation, invoice processing, or dynamic BKC printing yet. Do not use it for live customer transactions.
+Visit `http://127.0.0.1:8000`. Create master branches and users before entering transactions. There is no default administrator password.
 
-The service worker caches the app shell for repeat visits; it does not sync shipment data between devices.
+## Hosting status
+
+The full app is prepared for server deployment with Docker Compose and HTTPS. Hosting access has not yet been provided.
+
+`site/` remains the earlier [GitHub Pages prototype](https://bawdipku.github.io/Manifest/). Its records are local to each browser. It is not the PRD application's backend and must not be used for real transactions.

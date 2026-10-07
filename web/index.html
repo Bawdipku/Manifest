@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#102a43" />
+    <meta
+      name="description"
+      content="Operasional cargo, manifest, POD, SOA, dan invoice"
+    />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="stylesheet" href="/app.css" />
+    <title>Manifest & SOA</title>
+  </head>
+  <body>
+    <section id="login" class="login">
+      <form id="loginForm">
+        <span class="mark">M</span>
+        <h1>Manifest & SOA</h1>
+        <p>Masuk ke ruang kerja operasional cargo.</p>
+        <label
+          >Nama pengguna<input
+            name="username"
+            autocomplete="username"
+            required /></label
+        ><label
+          >Kata sandi<input
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required /></label
+        ><button class="primary">Masuk</button>
+        <p id="loginError" role="alert"></p>
+        <small>Akun dikelola administrator perusahaan.</small>
+      </form>
+    </section>
+    <div id="app" hidden>
+      <aside>
+        <div class="brand">
+          <span class="mark">M</span
+          ><strong>Manifest & SOA<small>OPERASIONAL CARGO</small></strong>
+        </div>
+        <nav id="nav" aria-label="Navigasi utama"></nav>
+        <div class="account">
+          <strong id="userName"></strong><small id="userRole"></small
+          ><button id="logout">Keluar</button>
+        </div>
+      </aside>
+      <main>
+        <header>
+          <div>
+            <p class="eyebrow">RUANG KERJA OPERASIONAL</p>
+            <h1 id="title">Ringkasan</h1>
+          </div>
+          <div class="header-actions">
+            <span id="clock"></span><button id="refresh">Muat ulang</button
+            ><button id="install" hidden>Pasang aplikasi</button>
+          </div>
+        </header>
+        <div id="offline" hidden>
+          Koneksi terputus. Data tidak dapat disimpan hingga terhubung kembali.
+        </div>
+        <div id="content"></div>
+      </main>
+    </div>
+    <dialog id="dialog">
+      <div class="dialog-head">
+        <h2 id="dialogTitle"></h2>
+        <button id="closeDialog" aria-label="Tutup">×</button>
+      </div>
+      <div id="dialogBody"></div>
+    </dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="/app.js"></script>
+  </body>
+</html>
