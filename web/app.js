@@ -80,7 +80,8 @@ const labels = {
   partner: "Mitra / Agen",
 };
 const label = (v) => labels[v] || v,
-  badge = (v) => `<span class="badge">${esc(label(v))}</span>`,
+  badge = (v) =>
+    `<span class="badge" data-status="${esc(v)}">${esc(label(v))}</span>`,
   button = (title, action, id = "", primary = false) =>
     `<button class="${primary ? "primary" : ""}" data-action="${esc(action)}" data-id="${esc(id)}">${esc(title)}</button>`,
   link = (title, url) =>
@@ -293,6 +294,20 @@ const navItems = [
   ["reports", "Laporan", "reports"],
   ["masters", "Master & Akun", "master"],
 ];
+const navPaths = {
+  home: "M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z",
+  sales: "M6 3h12v18l-3-2-3 2-3-2-3 2z M9 7h6 M9 11h6",
+  trips:
+    "M2 6h12v12H2z M14 10h4l4 4v4h-8 M6 21a2 2 0 1 0 0-4 2 2 0 0 0 0 4 M18 21a2 2 0 1 0 0-4 2 2 0 0 0 0 4",
+  receipts: "M3 10l9-7 9 7v11H3z M8 21v-8h8v8",
+  pod: "M5 3h14v18H5z M8 12l3 3 5-6",
+  field: "M5 21V3 M5 4h14l-3 4 3 4H5",
+  soa: "M4 5h16 M4 12h16 M4 19h16 M8 2v6 M16 9v6 M8 16v6",
+  returns: "M9 5L3 11l6 6 M3 11h12a6 6 0 0 1 0 12",
+  invoices: "M6 3h12v18H6z M9 7h6 M9 11h6 M9 16h3",
+  reports: "M4 3v18h17 M9 17v-6 M14 17V7 M19 17V4",
+  masters: "M4 6h16 M4 12h16 M4 18h16 M8 3v6 M16 9v6 M10 15v6",
+};
 function renderNav() {
   let nav = navItems.filter(([id, name, p]) => !p || can(p));
   if (session.user.role === "auditor")
@@ -301,7 +316,7 @@ function renderNav() {
   $("#nav").innerHTML = nav
     .map(
       ([id, name]) =>
-        `<button class="${page === id ? "active" : ""}" data-page="${id}">${name}</button>`,
+        `${{ home: "Ruang kerja", sales: "Operasional", soa: "Administrasi", masters: "Pengaturan" }[id] ? `<div class="nav-section">${{ home: "Ruang kerja", sales: "Operasional", soa: "Administrasi", masters: "Pengaturan" }[id]}</div>` : ""}<button class="${page === id ? "active" : ""}" ${page === id ? 'aria-current="page"' : ""} data-page="${id}"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${navPaths[id] || navPaths.home}"/></svg>${name}</button>`,
     )
     .join("");
   $("#title").textContent = nav.find((x) => x[0] === page)?.[1] || "Manifest";
@@ -326,7 +341,30 @@ function render() {
   let html = "";
   if (page === "home") {
     const active = s.shipments.filter((x) => x.status === "registered");
-    html = `<div class="stats">${[
+    const queue = [
+      [
+        "field",
+        "report",
+        "Laporan lapangan",
+        "Periksa laporan yang masuk",
+        s.field_reports.filter((x) => x.status === "pending").length,
+      ],
+      [
+        "trips",
+        "trip",
+        "Keberangkatan",
+        "Siapkan manifest perjalanan",
+        s.trips.filter((x) => x.status === "draft").length,
+      ],
+      [
+        "pod",
+        "pod",
+        "Bukti pengiriman",
+        "Lengkapi POD kiriman aktif",
+        active.filter((x) => !x.pod).length,
+      ],
+    ].filter((x) => can(x[1]));
+    html = `<div class="desk-intro"><p>Pantau perjalanan barang, selesaikan dokumen,<br>dan siapkan keberangkatan berikutnya.</p>${can("sales") ? button("+ Buat resi", "shipment.new", "", true) : ""}</div><div class="stats">${[
       ["Resi aktif", active.length],
       [
         "Dalam perjalanan",
@@ -341,11 +379,12 @@ function render() {
       ],
     ]
       .map(
-        ([t, n]) => `<article><span>${t}</span><strong>${n}</strong></article>`,
+        ([t, n], i) =>
+          `<article><span>${t}</span><strong>${n}</strong><small>${["Kiriman terdaftar", "Di jalan / diantar", "Bukti pengiriman", "Laporan lapangan"][i]}</small></article>`,
       )
       .join(
         "",
-      )}</div><div class="bar"><div><h2>Kiriman terbaru</h2><p>Posisi barang dan pengembalian dokumen dicatat terpisah.</p></div>${can("sales") ? button("+ Buat resi", "shipment.new", "", true) : ""}</div>${shipmentsTable(s.shipments.slice().reverse().slice(0, 8))}<div class="bar"><h2>Tindak lanjut</h2><label>Tanpa pembaruan<select id="followupHours"><option>24</option><option>48</option><option>72</option></select></label></div><div id="followups"></div>`;
+      )}</div>${queue.length ? `<div class="desk-section"><h2><span class="section-index">01</span>Meja dispatch</h2><small>Antrean kerja</small></div><div class="work-queue">${queue.map(([id, permission, title, description, count]) => `<button class="queue-item" data-page="${id}"><span><strong>${title}</strong><small>${description}</small></span><span class="queue-count">${count} <span aria-hidden="true">↗</span></span></button>`).join("")}</div>` : ""}<div class="desk-section"><h2><span class="section-index">02</span>Kiriman terbaru</h2><small>8 resi terakhir</small></div>${shipmentsTable(s.shipments.slice().reverse().slice(0, 8))}<div class="bar"><h2>Tindak lanjut</h2><label>Tanpa pembaruan<select id="followupHours"><option>24</option><option>48</option><option>72</option></select></label></div><div id="followups"></div>`;
   }
   if (page === "sales")
     html = `<div class="bar"><p>Snapshot pengirim disimpan saat pencatatan transaksi.</p>${can("sales") ? button("+ Buat resi", "shipment.new", "", true) : ""}</div><input class="search" id="search" placeholder="Cari atau scan nomor resi, lalu Enter" value="${esc(query)}" aria-label="Cari resi"><div id="salesRows">${shipmentsTable(s.shipments.filter((x) => JSON.stringify([x.number, x.receiver, x.sender.name]).toLowerCase().includes(query.toLowerCase())))}</div>`;

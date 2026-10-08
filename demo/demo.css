@@ -1,6 +1,6 @@
 .demo-bar {
-  background: #fff2cc;
-  border-bottom: 1px solid #e5ce83;
+  background: #eceadd;
+  border-bottom: 1px solid #d4d0bc;
   padding: 12px 22px;
   color: #644b0b;
   font-size: 14px;
@@ -43,7 +43,7 @@
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: #102a43;
+  background: #232a26;
   display: grid;
   place-items: center;
   padding: 25px;
@@ -101,5 +101,51 @@
 @media print {
   .demo-bar {
     display: none;
+  }
+}
+
+.demo-bar {
+  padding: 9px 20px;
+  font-size: 11px;
+}
+.demo-bar strong {
+  font-size: 10px;
+  letter-spacing: 0.8px;
+}
+.demo-bar small {
+  font-size: 10px;
+}
+.demo-tools label,
+.demo-tools select,
+.demo-tools button {
+  font-size: 11px;
+}
+.demo-tools select {
+  padding: 5px 8px;
+}
+.demo-tools button {
+  padding: 6px 9px;
+  background: transparent;
+  border-color: #c8c5b5;
+}
+@media (max-width: 700px) {
+  .demo-tools {
+    gap: 6px;
+  }
+  .demo-tools label {
+    width: auto;
+    flex: 1;
+  }
+  .demo-tools select {
+    max-width: 160px;
+  }
+  .demo-bar {
+    padding: 9px 12px;
+  }
+  #logout::after {
+    font-size: 10px;
+  }
+  #logout {
+    max-width: 115px;
   }
 }
